@@ -1,0 +1,32 @@
+# Sensitive files
+*.session
+*.session-journal
+.env
+!*.env.example
+cookies/
+*.json
+!package.json
+!tsconfig.json
+!config.yaml.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Downloads
+/downloads/
+/tmp/

@@ -1,0 +1,15 @@
+# Telegram Toolkit Configuration
+# Get API keys from https://my.telegram.org/apps
+
+api_id: YOUR_API_ID_HERE
+api_hash: YOUR_API_HASH_HERE
+
+# Download settings
+max_concurrent_downloads: 4
+download_delay: 1.0
+
+# Rate limit
+rate_limit:
+  messages_per_sec: 25
+  downloads_per_sec: 5
+  flood_wait_threshold: 60
