@@ -1,0 +1,82 @@
+# ============================================================
+# 📋 Session Log — fill at end of every builder session
+# ============================================================
+# Copy to: /workspace/n8n-wfb/session-logs/YYYY-MM-DD_session-log.yaml
+#
+# ROLE DISTRIBUTION:
+#   user_*   → Filled by the USER after session
+#   judge_*  → Filled by the AGENT (you) during/after session
+#   worker_* → Filled by the NIGHTLY CRON (automated)
+
+session:
+  id: ""                         # from /status or session_search
+  date: "YYYY-MM-DD"
+  phase: "intake | planner | reviewer | builder"
+  topic: "موضوع سشن"
+  model_used: "opencode200k | kimchi/deepseek-v4-flash | ..."
+
+# ============================================================
+# ✍️ USER SECTION — user fills at end of session
+# ============================================================
+
+## 🐛 Problems user fixed manually (model could not fix)
+user_manual_fixes:
+  - symptom: "مشکل چی بود؟"
+    manual_fix: "چجوری دستی درستش کردم؟"
+    root_cause: "علت ریشه‌ای چی بود؟"
+    n8n_ui_fix: true | false      # was it fixed in n8n UI directly?
+
+## 💡 Corrections / preferences user gave during session
+user_feedback:
+  - topic: "مثلاً Switch routing"
+    detail: "گفتم از Execute Sub-workflow استفاده کن نه HTTP Request"
+    type: "correction | improvement | best_practice"
+
+## 💭 Ideas for future
+user_suggestions:
+  - "ایده یا قابلیت جدید"
+
+## ⚠️ Things the user felt the agent missed or misunderstood
+user_missed:
+  - "چیزی که فکر می‌کنی من متوجه نشدم یا اشتباه فهمیدم"
+
+# ============================================================
+# 🧑‍⚖️ AGENT SECTION — fill during/after session
+# ============================================================
+
+## 🎯 Model mistakes caught
+judge_model_mistakes:
+  - detail: "مدل دوباره update زد بجای upsert"
+    model: "opencode200k"
+    in_trap_ref: false
+
+## 🔍 Things agent noticed mid-work (oversights, missed requirements)
+judge_observations:
+  - detail: "کاربر ۱۰ بار /help زد — هندل نشد"
+    priority: low | medium | high
+
+judge_stats:
+  successful_nodes: 0
+  failed_attempts: 0
+  api_retries: 0
+
+# ============================================================
+# 🌙 NIGHTLY WORKER SECTION — filled by 2 AM cron
+# ============================================================
+
+## 🔍 Patterns found across multiple sessions
+worker_insights:
+  - pattern: "مدل consistently DataTable columns.value رو میندازه"
+    sessions: []
+    recommendation: "باید یه post-addNode fix مرحله اضافه بشه"
+
+## 🐛 New bugs NOT in trap-reference.md
+worker_bugs_found:
+  - symptom: ""
+    root_cause: ""
+    source: "session_search | session_log"
+
+## 👀 Things BOTH user AND agent missed (caught by cross-session analysis)
+worker_missed_items:
+  - detail: "Planner گفته ۳۵ نود ولی واقعاً ۸۵ نود بوده"
+    source: "cross_reference"

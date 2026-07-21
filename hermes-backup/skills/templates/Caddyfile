@@ -1,0 +1,22 @@
+# Caddyfile — Hermes Browser Sync Cookie Webhook
+#
+# Copy this to /etc/caddy/Caddyfile and adjust:
+#   1. Replace mydomaim with your actual domain
+#   2. Adjust port if cookie-sync runs on a different port
+#   3. Run: sudo systemctl reload caddy
+#
+# Caddy auto-provisions LetsEncrypt SSL — no certbot needed.
+
+sync.mydomaim {
+    reverse_proxy localhost:9999
+}
+
+# Optionally also proxy the WebUI on the same host:
+# webui.mydomaim {
+#     reverse_proxy localhost:8787
+# }
+
+# Or a catch-all for all subdomains to the same FastAPI:
+# *.mydomaim {
+#     reverse_proxy localhost:9999
+# }

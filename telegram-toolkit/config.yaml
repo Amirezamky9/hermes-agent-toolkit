@@ -1,0 +1,8 @@
+api_id: 39012294
+api_hash: c4d34e5115ff588d576749a7b99df3fa
+max_concurrent_downloads: 4
+download_delay: 1.0
+rate_limit:
+  messages_per_sec: 25
+  downloads_per_sec: 5
+  flood_wait_threshold: 60
