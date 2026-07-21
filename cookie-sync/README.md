@@ -1,78 +1,32 @@
 # Cookie Sync
 
-Sync browser cookies to server tools automatically.
+The cookie sync system is split into two parts:
 
-## How It Works
+- `cookie-sync/client/` — CacheCat-based Chrome extension installed on the user’s computer
+- `cookie-sync/backend/` — FastAPI webhook server running on the Hermes side
+- `cookie-sync/hermes-browser-sync.config.json` — Hermes-side config template
 
-1. Install CacheCat Chrome extension
-2. Start webhook server
-3. Click "Sync" on any website
-4. Cookies are sent to server
-5. Server updates tool credentials
+## Recommended flow
 
-## Setup
+1. Build the client extension from `cookie-sync/client/`
+2. Install the extension in Chrome
+3. Run the backend in `cookie-sync/backend/`
+4. Configure the extension with the backend URL + API key
+5. Add sync domains
+6. Use Hermes/Playwright with the synced `storage_state.json`
 
-### 1. Install Extension
+## Client
 
-See [CacheCat Repository](https://github.com/chinmay29hub/CacheCat)
+See `cookie-sync/client/README.md`.
 
-### 2. Start Server
+## Backend
 
-```bash
-# Generate token
-export COOKIE_SYNC_TOKEN=$(python3 -c "import secrets; print(secrets.token_urlsafe(32))")
+See `cookie-sync/backend/README.md`.
 
-# Start
-python3 webhook.py
-```
+## Hermes integration config
 
-### 3. Configure Extension
+Copy `cookie-sync/hermes-browser-sync.config.json` into the Hermes project root.
 
-- Webhook URL: `http://localhost:9999`
-- Token: Your generated token
+## Security
 
-## Supported Tools
-
-| Tool | Cookie Format | Auto-Update |
-|------|---------------|-------------|
-| Twitter/X | auth_token, ct0 | ✅ |
-| Reddit | reddit_session | ✅ |
-| YouTube | SID, HSID, etc. | ✅ |
-| Xueqiu | xq_a_token | ✅ |
-
-## API
-
-### POST /
-Receive cookies from extension.
-
-**Request:**
-```json
-{
-  "domain": "twitter.com",
-  "cookies": [{"name": "auth_token", "value": "..."}]
-}
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "domain": "twitter.com",
-  "count": 2
-}
-```
-
-### GET /health
-Health check.
-
-**Response:**
-```json
-{
-  "status": "ok",
-  "timestamp": "2026-07-20T23:00:00"
-}
-```
-
-## Credits
-
-Based on [CacheCat](https://github.com/chinmay29hub/CacheCat) by chinmay29hub.
+Do not commit real cookies, tokens, `.env`, or `storage_state.json`.

@@ -1,335 +1,428 @@
-# 🚀 Installation Guide
+# Installation Guide
 
-> Complete guide to install Hermes Toolkit on a new Hermes instance.
+Complete install guide for a fresh Hermes instance.
 
-## Prerequisites
+## What you install
 
+- **Cookie Sync Client**: CacheCat-based Chrome extension on the user’s computer
+- **Cookie Sync Backend**: FastAPI webhook server on the Hermes side
+- **Telegram Toolkit**: Telegram automation, search, download, monitor
+- **Research Tools**: Agent-Reach-based scripts and skills
+- **Hermes Skills**: `agent-reach`, `deep-research`, `research-manager`, `web-research`, `deep-research-optimized`, `telegram-music-bot`
+
+---
+
+## 0) Prerequisites
+
+### On the Hermes machine
 - Python 3.10+
-- Node.js 18+ (for CLIs)
+- Node.js 18+
 - Git
-- Telegram account (for Telegram toolkit)
+- `pipx` recommended
+- `gh` CLI for GitHub operations
+- `mcporter` for Exa search integration
 
-## Quick Install (5 minutes)
+### On the user’s computer
+- Google Chrome 88+
+- Chrome extension installation access
+- If testing cookie sync locally, a browser profile with the desired logins
 
-### Step 1: Clone Repository
+---
+
+## 1) Clone the repository
 
 ```bash
-git clone https://github.com/Amirezamky9/hermes-toolkit.git
-cd hermes-toolkit
+git clone https://github.com/Amirezamky9/hermes-agent-toolkit.git
+cd hermes-agent-toolkit
 ```
 
-### Step 2: Install Python Dependencies
+---
+
+## 2) Install Python dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 3: Install Node.js CLIs
+If you prefer isolated installs:
 
 ```bash
-# Install yt-dlp
-pip install yt-dlp
-
-# Install Twitter CLI
-pipx install twitter-cli
-
-# Install Reddit CLI
-pipx install 'git+https://github.com/public-clis/rdt-cli.git@5e4fb3720d5c174e976cd425ccc3b879d52cac66'
-
-# Install Bilibili CLI
-pipx install bilibili-cli
-
-# Install GitHub CLI
-sudo apt install gh
-
-# Install mcporter (MCP tool)
-npm install -g mcporter
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
-### Step 4: Setup Telegram Toolkit
+---
+
+## 3) Install Hermes skills
+
+Copy the skills into Hermes:
 
 ```bash
-cd telegram-toolkit
-
-# Create config
-cp config.yaml.example config.yaml
-
-# Edit with your API keys
-nano config.yaml
-# Get keys from: https://my.telegram.org/apps
-
-# First login (requires phone number)
-python3 cli.py info @telegram
+cp -r skills/* ~/.hermes/skills/
+chmod -R u+rwX ~/.hermes/skills
 ```
 
-### Step 5: Setup Cookie Sync
+Copy the scripts into Hermes:
 
 ```bash
-cd cookie-sync
-
-# Generate token
-export COOKIE_SYNC_TOKEN=$(python3 -c "import secrets; print(secrets.token_urlsafe(32))")
-
-# Start server
-python3 webhook.py
-```
-
-### Step 6: Setup Exa Search
-
-```bash
-# Add Exa to mcporter
-mcporter config add exa https://mcp.exa.ai/mcp
-
-# Test
-mcporter call 'exa.web_search_exa(query: "test", numResults: 1)'
-```
-
-### Step 7: Copy Skills to Hermes
-
-```bash
-# Copy agent-reach skill
-cp -r skills/agent-reach ~/.hermes/skills/
-
-# Copy research skills
-cp -r skills/research ~/.hermes/skills/
-
-# Copy deep-research-optimized
-cp -r skills/deep-research-optimized ~/.hermes/skills/
-
-# Copy telegram skill
-cp -r skills/telegram ~/.hermes/skills/
-
-# Copy scripts
 cp research/scripts/*.sh ~/.hermes/scripts/
-```
-
-### Step 8: Verify Installation
-
-```bash
-# Check all tools
-agent-reach doctor --json
-
-# Test research
-./research/scripts/research-web.sh "hello world"
-
-# Test Telegram
-cd telegram-toolkit
-python3 cli.py info @telegram
-```
-
-## Detailed Installation
-
-### Agent-Reach (Mother Project)
-
-```bash
-# Install agent-reach
-pipx install https://github.com/Panniantong/agent-reach/archive/main.zip
-
-# Setup channels
-agent-reach install --env=auto
-
-# Check health
-agent-reach doctor --json
-```
-
-### Twitter/X Setup
-
-```bash
-# Set tokens
-export TWITTER_AUTH_TOKEN="your_token"
-export TWITTER_CT0="your_ct0"
-
-# Test
-twitter whoami
-```
-
-### Reddit Setup
-
-```bash
-# Login
-rdt login
-
-# Test
-rdt whoami
-```
-
-### YouTube Setup
-
-```bash
-# Create config
-mkdir -p ~/.config/yt-dlp
-cat > ~/.config/yt-dlp/config << 'EOF'
---js-runtimes node
---cookies ~/.agent-reach/cookies/youtube-cookies.txt
---remote-components ejs:github
-EOF
-
-# Test
-yt-dlp --version
-```
-
-### Grok Setup (Optional)
-
-```bash
-# Get API key from https://console.x.ai
-export XAI_API_KEY="your_key"
-
-# Test
-./research/scripts/research-grok.sh "hello"
-```
-
-## Skills Installation
-
-### Agent-Reach Skill
-
-```bash
-# Copy skill
-cp -r skills/agent-reach ~/.hermes/skills/
-
-# Copy references
-cp -r skills/agent-reach/references ~/.hermes/skills/agent-reach/
-
-# Copy scripts
-cp -r skills/agent-reach/scripts ~/.hermes/skills/agent-reach/
-
-# Make scripts executable
-chmod +x ~/.hermes/skills/agent-reach/scripts/*.sh
-```
-
-### Research Skills
-
-```bash
-# Copy all research skills
-cp -r skills/research/* ~/.hermes/skills/research/
-
-# Copy deep-research-optimized
-cp -r skills/deep-research-optimized ~/.hermes/skills/
-```
-
-### Telegram Skills
-
-```bash
-# Copy telegram skills
-cp -r skills/telegram/* ~/.hermes/skills/telegram/
-```
-
-## Scripts Installation
-
-```bash
-# Copy research scripts
-cp research/scripts/*.sh ~/.hermes/scripts/
-
-# Make executable
 chmod +x ~/.hermes/scripts/*.sh
-
-# Copy agent-reach scripts
-cp skills/agent-reach/scripts/*.sh ~/.hermes/scripts/
-cp skills/agent-reach/scripts/*.py ~/.hermes/scripts/
 ```
 
-## Verification
+### Skills included
+- `agent-reach` — mother project router for 16 platforms
+- `deep-research` — delegation-based deep research
+- `research-manager` — research orchestration
+- `web-research` — web research workflow
+- `deep-research-optimized` — token-efficient deep research
+- `telegram-music-bot` — music bot automation
 
-### Check All Tools
+---
+
+## 4) Configure Agent-Reach
+
+Install Agent-Reach if it is not already present on the Hermes machine:
 
 ```bash
-# Agent-reach health check
+pipx install https://github.com/Panniantong/agent-reach/archive/main.zip
+agent-reach install --env=auto
 agent-reach doctor --json
-
-# Check individual tools
-which yt-dlp gh twitter rdt-cli bili-cli mcporter
-
-# Check Python packages
-pip list | grep -E "telethon|pyyaml|aiofiles"
 ```
 
-### Test Research Scripts
+### What Agent-Reach provides
+- Web search via Jina / Exa
+- Twitter/X, Reddit, YouTube, GitHub
+- Bilibili, Telegram, RSS, V2EX
+- Facebook, Instagram, LinkedIn, XiaoHongShu
+- Xueqiu, Grok
 
-```bash
-# Test web search
-./research/scripts/research-web.sh "hello"
+### Required installs for common backends
+- `yt-dlp`
+- `gh`
+- `twitter-cli`
+- `rdt-cli`
+- `bili-cli`
+- `mcporter`
+- `telethon`
 
-# Test Twitter
-./research/scripts/research-twitter.sh "hello"
+If a backend is `warn` or `off`, follow `agent-reach doctor --json` and install the missing backend.
 
-# Test YouTube
-./research/scripts/research-youtube.sh "hello"
+---
 
-# Test Reddit
-./research/scripts/research-reddit.sh "hello"
+## 5) Install the Telegram Toolkit
 
-# Test Telegram
-./research/scripts/research-telegram.sh "hello"
+The Telegram toolkit lives in:
+
+```text
+telegram-toolkit/
 ```
 
-### Test Telegram Toolkit
+### Setup
 
 ```bash
 cd telegram-toolkit
+cp config.yaml.example config.yaml
+```
 
-# Test CLI
+Edit `config.yaml` and set:
+- `api_id`
+- `api_hash`
+
+### Get Telegram API keys
+1. Go to https://my.telegram.org/apps
+2. Create an app
+3. Copy `api_id` and `api_hash`
+4. Put them in `telegram-toolkit/config.yaml`
+
+### First login
+
+```bash
 python3 cli.py info @telegram
+```
 
-# Test music bot
+Enter the phone number and verification code when prompted.
+
+### Test commands
+
+```bash
+python3 cli.py search "query" --channel @channel
+python3 cli.py download @channel --limit 10
+python3 cli.py export @channel --format json
+python3 cli.py monitor @channel
+```
+
+### Music bot
+
+```bash
 python3 music_bot.py search "Hello Adele"
-
-# Test bot interactor
-python3 bot_interactor.py @whatsmusicbot --message "/start"
+python3 music_bot.py full "Hello Adele" --output /tmp/
 ```
 
-## Troubleshooting
+---
 
-### Common Issues
+## 6) Install the Cookie Sync Client Extension
 
-#### yt-dlp not found
+The client extension is located in:
 
-```bash
-pip install yt-dlp
-# or
-pip install -U yt-dlp
+```text
+cookie-sync/client/
 ```
 
-#### Twitter authentication failed
+### Build the extension
 
 ```bash
-# Check tokens
-echo $TWITTER_AUTH_TOKEN
-echo $TWITTER_CT0
-
-# Re-login
-twitter login
+cd cookie-sync/client
+npm install
+npm run build
 ```
 
-#### Telegram login failed
+The build output is in:
+
+```text
+cookie-sync/client/dist/
+```
+
+### Load it into Chrome
+
+1. Open `chrome://extensions/`
+2. Enable **Developer mode**
+3. Click **Load unpacked**
+4. Select `cookie-sync/client/dist/`
+5. The extension icon appears in the toolbar
+
+### Configure the sync domains
+In the extension dashboard:
+1. Open **Hermes Sync** tab
+2. Enable **Hermes Sync**
+3. Add domains to sync
+   - Example: `google.com`
+   - Example: `notebooklm.google.com`
+   - Example: `x.com`
+4. Save
+
+### What the client does
+- Captures cookies for the selected domains
+- Sends them to the backend as JSON
+- Supports manual sync and cookie-change auto-sync
+- Never logs cookie values to the console
+
+---
+
+## 7) Install the Hermes Backend
+
+The backend lives in:
+
+```text
+cookie-sync/backend/
+```
+
+### Create env file
 
 ```bash
-# Delete session
-rm -f telegram-toolkit/telegram.session
+cd cookie-sync/backend
+cp .env.example .env
+```
 
-# Re-login
+Set:
+- `HERMES_API_KEY`
+- `STORAGE_STATE_PATH`
+- `BACKEND_HOST`
+- `BACKEND_PORT`
+
+### Install backend dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Run backend
+
+```bash
+python main.py
+```
+
+Backend defaults to:
+- `http://localhost:8000`
+- `POST /api/browser-sync`
+- `POST /api/test-connection`
+- `GET /health`
+
+---
+
+## 8) Connect client to backend
+
+In the extension Hermes Sync settings:
+
+- **API URL**: `http://localhost:8000/api/browser-sync`
+- **API Key**: the same value as `HERMES_API_KEY`
+
+Then test:
+1. Click **TEST CONNECTION** in the extension
+2. Click **SYNC NOW**
+3. Confirm the backend writes `storage_state.json`
+
+---
+
+## 9) Cloudflare fallback / remote access
+
+If your backend is not reachable from the user’s computer:
+
+### Option A — Cloudflare Tunnel
+Expose the backend with a tunnel and use that public HTTPS URL in the extension.
+
+Example:
+```bash
+cloudflared tunnel --url http://localhost:8000
+```
+
+Then set the extension API URL to the tunnel URL, for example:
+```text
+https://your-tunnel.trycloudflare.com/api/browser-sync
+```
+
+### Option B — Any HTTPS reverse proxy
+Use nginx / Caddy / any HTTPS front door and point the extension there.
+
+### Important
+- The extension should use HTTPS when possible
+- The API key is still required
+- Do not expose the backend without auth
+
+---
+
+## 10) Hermes configuration
+
+### Hermes-side config file
+Copy:
+
+```text
+cookie-sync/hermes-browser-sync.config.json
+```
+
+Into the Hermes project root that will use the synced browser state.
+
+### What it does
+- Documents the webhook endpoint
+- Documents the payload format
+- Tells Hermes where to read the synced Playwright storage state
+
+### Typical Hermes usage
+In the Hermes automation project, point Playwright to the synced file:
+
+```python
+context = browser.new_context(storage_state="storage_state.json")
+```
+
+If Hermes uses a different path, update `STORAGE_STATE_PATH` in the backend and the Hermes config file together.
+
+---
+
+## 11) Full installation checklist
+
+### Client machine
+- [ ] Chrome installed
+- [ ] Extension built
+- [ ] `dist/` loaded in Chrome
+- [ ] Domains added
+- [ ] Hermes Sync enabled
+- [ ] API URL set
+- [ ] API key set
+
+### Hermes backend
+- [ ] Python deps installed
+- [ ] `.env` created
+- [ ] Backend started
+- [ ] `/health` returns OK
+- [ ] `POST /api/test-connection` works
+- [ ] `POST /api/browser-sync` receives cookies
+
+### Hermes agent
+- [ ] `agent-reach doctor --json` is healthy
+- [ ] Skills copied into `~/.hermes/skills/`
+- [ ] Research scripts copied into `~/.hermes/scripts/`
+- [ ] Telegram toolkit configured
+
+---
+
+## 12) Verification steps
+
+### Verify extension build
+```bash
+cd cookie-sync/client
+npm run build
+ls dist/
+```
+
+### Verify backend
+```bash
+cd cookie-sync/backend
+python main.py
+curl http://localhost:8000/health
+```
+
+### Verify cookie sync
+1. Configure a domain
+2. Click **TEST CONNECTION**
+3. Click **SYNC NOW**
+4. Confirm `storage_state.json` was created or updated
+
+### Verify Hermes install
+```bash
+agent-reach doctor --json
 python3 telegram-toolkit/cli.py info @telegram
+./research/scripts/research-web.sh "hello world"
 ```
 
-#### Exa search failed
+---
 
-```bash
-# Check mcporter
-mcporter call 'exa.web_search_exa(query: "test", numResults: 1)'
+## 13) Troubleshooting
 
-# Re-add Exa
-mcporter config add exa https://mcp.exa.ai/mcp
-```
+### Extension build fails
+- Make sure Node.js 18+ is installed
+- Re-run `npm install`
+- If the build tool fails, use `dist/` only if it already exists and is valid
 
-### Getting Help
+### Backend unreachable
+- Check the process is running
+- Check the port number
+- Use Cloudflare Tunnel if the backend is behind NAT/firewall
 
-1. Check this guide
-2. Read `docs/troubleshooting.md`
-3. Check GitHub Issues
-4. Run `agent-reach doctor --json`
+### No cookies synced
+- Check selected domains
+- Confirm the site domain matches the sync list
+- Confirm the extension has permission to the site
 
-## Credits
+### Authorization fails
+- Make sure the API key in the extension matches the backend env
+- Make sure the backend is reading the `.env`
 
-Built on top of:
-- [Agent-Reach](https://github.com/Panniantong/Agent-Reach) - Platform router
-- [CacheCat](https://github.com/chinmay29hub/CacheCat) - Chrome cookie extension
-- [Telethon](https://github.com/LonamiWebs/Telethon) - Telegram MTProto
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) - Video download
+### Cookies not useful in Hermes
+- Ensure the Hermes project points to the same `storage_state.json`
+- Ensure Hermes is using Playwright storage state, not a different auth mechanism
+
+---
+
+## 14) Files you should not commit
+
+Do **not** commit:
+- real cookies
+- `.env`
+- `storage_state.json`
+- browser session files
+- API keys
+- tokens
+- user-specific config
+
+Use the provided `.env.example` and config templates only.
+
+---
+
+## 15) Credits
+
+- [Agent-Reach](https://github.com/Panniantong/Agent-Reach) — mother project
+- [CacheCat](https://github.com/chinmay29hub/CacheCat) — browser extension base
+- [Telethon](https://github.com/LonamiWebs/Telethon) — Telegram automation
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) — media extraction
+- [Exa](https://exa.ai) — web search
+- [Jina Reader](https://github.com/jina-ai/reader) — article reading

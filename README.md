@@ -1,359 +1,152 @@
 # 🛠️ Hermes Toolkit
 
-> Complete AI agent toolkit — cookie sync, Telegram automation, and research tools for 16+ platforms.
+> Complete AI agent toolkit — cookie sync, Telegram automation, and research tools for 16+ platforms.  
 > Built on top of [Agent-Reach](https://github.com/Panniantong/Agent-Reach), the mother project.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-## 📦 What's Included
+## What this repository contains
 
-### 1. Cookie Sync
-Sync browser cookies to server tools automatically.
+### 1) Cookie Sync
+Two-part cookie sync system:
 
-| Component | Description |
-|-----------|-------------|
-| **CacheCat** | Chrome extension for cookie management |
-| **Webhook Server** | Python server receiving cookies |
+| Component | Path | Description |
+|-----------|------|-------------|
+| Client extension | `cookie-sync/client/` | CacheCat-based Chrome extension installed on the user's computer |
+| Hermes backend | `cookie-sync/backend/` | FastAPI webhook server that receives cookies and writes Playwright `storage_state.json` |
+| Hermes integration config | `cookie-sync/hermes-browser-sync.config.json` | Template for Hermes-side backend wiring |
 
-### 2. Telegram Toolkit
-Full-featured Telegram automation.
+### 2) Telegram Toolkit
+Full Telegram automation:
 
 | Feature | Description |
 |---------|-------------|
-| **Search** | Search messages in channels |
-| **Download** | Download media (photos, videos, audio) |
-| **Export** | Export messages to JSON/CSV |
-| **Monitor** | Real-time channel monitoring |
-| **Music Bot** | Interact with @whatsmusicbot |
-| **Bot Interactor** | Click buttons in any bot |
+| Search | Search messages in channels |
+| Download | Download media (photos, videos, audio) |
+| Export | Export messages to JSON/CSV |
+| Monitor | Real-time channel monitoring |
+| Bot interaction | Click buttons in any bot |
+| Music bot | Interact with `@whatsmusicbot` |
 
-### 3. Research Tools
-Complete research toolkit for AI agents — search, download, and monitor across 16+ platforms.
+### 3) Research Tools
+Token-compressed research toolkit for 16+ platforms:
 
 | Platform | Features |
 |----------|----------|
-| **Web** | Jina Reader, full-text search |
-| **Twitter/X** | Search, timeline, user info |
-| **YouTube** | Search, download, subtitles |
-| **Reddit** | Search, posts, comments |
-| **TikTok** | Search, video info |
-| **Bilibili** | Search, video info, subtitles |
-| **Telegram** | Search, download, monitor |
-| **Grok** | AI-powered search |
-| **Multi-platform** | Auto-update all tools |
+| Web | Jina Reader, full-text search |
+| Twitter/X | Search, timeline, user info |
+| YouTube | Search, download, subtitles |
+| Reddit | Search, posts, comments |
+| TikTok | Search, video info |
+| Bilibili | Search, video info, subtitles |
+| Telegram | Search, download, monitor |
+| Grok | AI-powered search |
+| Multi-platform | Auto-update all tools |
 
-### 4. Skills (for Hermes)
+### 4) Hermes Skills
+Skills included for direct Hermes installation:
 
 | Skill | Description |
 |-------|-------------|
-| **agent-reach** | Main skill — 16 platforms, multi-backend routing |
-| **deep-research** | Deep research with delegation |
-| **research-manager** | Research orchestration |
-| **web-research** | Web research with multiple sources |
-| **deep-research-optimized** | Token-optimized deep research |
-| **telegram-music-bot** | Music bot interaction |
+| `agent-reach` | Main skill — 16 platforms, multi-backend routing |
+| `deep-research` | Deep research with delegation |
+| `research-manager` | Research orchestration |
+| `web-research` | Web research with multiple sources |
+| `deep-research-optimized` | Token-optimized deep research |
+| `telegram-music-bot` | Music bot interaction |
 
-## 🚀 Quick Start
+---
 
-**For complete installation guide, see [docs/installation.md](docs/installation.md)**
+## Quick start
 
-### Prerequisites
+For full installation instructions, see [docs/installation.md](docs/installation.md).
 
-- Python 3.10+
-- Google Chrome (for CacheCat)
-- Telegram account
-
-### Installation
+### Minimal setup
 
 ```bash
-# Clone repository
-git clone https://github.com/Amirezamky9/hermes-toolkit.git
-cd hermes-toolkit
-
-# Install dependencies
+git clone https://github.com/Amirezamky9/hermes-agent-toolkit.git
+cd hermes-agent-toolkit
 pip install -r requirements.txt
 ```
 
-### Cookie Sync Setup
-
-#### Step 1: Install CacheCat Extension
-
-1. Open Chrome
-2. Go to `chrome://extensions/`
-3. Enable "Developer mode"
-4. Click "Load unpacked"
-5. Select `cookie-sync/cachecat-extension/` folder
-
-#### Step 2: Start Webhook Server
+### Install Hermes skills
 
 ```bash
-# Generate a secure token
-export COOKIE_SYNC_TOKEN=$(python3 -c "import secrets; print(secrets.token_urlsafe(32))")
-
-# Start server
-python3 cookie-sync/webhook.py
+cp -r skills/* ~/.hermes/skills/
+cp research/scripts/*.sh ~/.hermes/scripts/
+chmod +x ~/.hermes/scripts/*.sh
 ```
 
-#### Step 3: Configure Extension
+---
 
-1. Click CacheCat icon in Chrome toolbar
-2. Enter webhook URL: `http://localhost:9999`
-3. Enter your token
-4. Click "Sync" on any website
+## Cookie Sync workflow
 
-### Telegram Toolkit Setup
+### Client side
+1. Build the extension from `cookie-sync/client/`
+2. Load `cookie-sync/client/dist/` in Chrome
+3. Open the extension dashboard
+4. Configure domains to sync
+5. Enable `Hermes Sync`
 
-#### Step 1: Get API Keys
+### Hermes backend side
+1. Run `cookie-sync/backend/main.py` on your Hermes server
+2. Set `HERMES_API_KEY`
+3. Point the extension to the backend URL
+4. Optional: use Cloudflare Tunnel if the backend is not publicly reachable
 
-1. Go to https://my.telegram.org/apps
-2. Create an application
-3. Copy `api_id` and `api_hash`
+### Hermes integration
+1. Place `cookie-sync/hermes-browser-sync.config.json` in the Hermes project root
+2. Point it to your backend URL
+3. Hermes reads the synced `storage_state.json` for authenticated browser sessions
 
-#### Step 2: Configure
+---
 
-```bash
-# Create config
-cat > telegram-toolkit/config.yaml << EOF
-api_id: YOUR_API_ID
-api_hash: YOUR_API_HASH
-EOF
-```
+## Main directories
 
-#### Step 3: Login
-
-```bash
-cd telegram-toolkit
-python3 cli.py info @telegram
-# Enter phone number and code when prompted
-```
-
-## 📖 Usage
-
-### Cookie Sync
-
-```bash
-# Start server
-python3 cookie-sync/webhook.py
-
-# Check health
-curl http://localhost:9999/health
-```
-
-### Telegram Toolkit
-
-```bash
-cd telegram-toolkit
-
-# Search messages
-python3 cli.py search "query" --channel @channel
-
-# Download media
-python3 cli.py download @channel --limit 100
-
-# Export to JSON
-python3 cli.py export @channel --format json
-
-# Monitor channel
-python3 cli.py monitor @channel
-
-# Get channel info
-python3 cli.py info @channel
-```
-
-### Music Bot
-
-```bash
-cd telegram-toolkit
-
-# Search for music
-python3 music_bot.py search "Hello Adele"
-
-# Download music
-python3 music_bot.py download "Hello Adele"
-
-# Full flow (search + download + lyrics)
-python3 music_bot.py full "Hello Adele" --output /tmp/
-```
-
-### Research Tools
-
-```bash
-cd research
-
-# Search web
-./scripts/research-web.sh "AI agent"
-
-# Search Twitter
-./scripts/research-twitter.sh "machine learning"
-
-# Search YouTube
-./scripts/research-youtube.sh "python tutorial"
-
-# Search Reddit
-./scripts/research-reddit.sh "deep learning"
-
-# Search TikTok
-./scripts/research-tiktok.sh "coding"
-
-# Search Bilibili
-./scripts/research-bilibili.sh "anime"
-
-# Search Telegram
-./scripts/research-telegram.sh "AI" "@channel"
-
-# Download from Telegram
-./scripts/telegram-media-downloader.sh "@channel" 100
-
-# Monitor Telegram channel
-./scripts/telegram-channel-monitor.sh "@channel" 30
-
-# Update all tools
-./scripts/agent-reach-update.sh
-```
-
-## 🏗️ Architecture
-
-```
+```text
 hermes-toolkit/
 ├── cookie-sync/
-│   ├── webhook.py              # Webhook server
-│   ├── cachecat-extension/     # Chrome extension
+│   ├── client/              # CacheCat-based browser extension
+│   ├── backend/             # FastAPI webhook server
+│   ├── hermes-browser-sync.config.json
 │   └── README.md
 ├── telegram-toolkit/
-│   ├── cli.py                  # Main CLI
-│   ├── music_bot.py            # Music bot integration
-│   ├── bot_interactor.py       # Bot button clicker
-│   ├── modules/                # Additional modules
-│   └── README.md
 ├── research/
-│   ├── scripts/                # Research scripts
-│   │   ├── research-web.sh
-│   │   ├── research-twitter.sh
-│   │   ├── research-youtube.sh
-│   │   ├── research-reddit.sh
-│   │   ├── research-tiktok.sh
-│   │   ├── research-bilibili.sh
-│   │   ├── research-telegram.sh
-│   │   ├── research-grok.sh
-│   │   ├── agent-reach-update.sh
-│   │   ├── telegram-media-downloader.sh
-│   │   └── telegram-channel-monitor.sh
-│   └── README.md
 ├── skills/
-│   ├── agent-reach/            # Main skill (16 platforms)
-│   │   ├── SKILL.md
-│   │   ├── references/         # 20 reference docs
-│   │   └── scripts/            # Helper scripts
-│   ├── research/               # Research skills
-│   │   ├── deep-research/
-│   │   ├── research-manager/
-│   │   └── web-research/
-│   ├── deep-research-optimized/
-│   └── telegram/
-│       └── telegram-music-bot/
 ├── docs/
-│   ├── installation.md         # Complete install guide
-│   ├── cookie-sync.md
-│   ├── telegram-toolkit.md
-│   └── troubleshooting.md
 ├── requirements.txt
 ├── LICENSE
 └── README.md
 ```
 
-## 🔧 Configuration
+---
 
-### Environment Variables
+## Credits and thanks
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `COOKIE_SYNC_TOKEN` | Webhook auth token | Required |
-| `COOKIE_SYNC_PORT` | Webhook port | 9999 |
-| `TG_API_ID` | Telegram API ID | Required |
-| `TG_API_HASH` | Telegram API Hash | Required |
+This project is built on top of these open-source projects:
 
-### Config Files
+| Project | Role |
+|---------|------|
+| [Agent-Reach](https://github.com/Panniantong/Agent-Reach) | Mother project for research routing |
+| [CacheCat](https://github.com/chinmay29hub/CacheCat) | Chrome extension base for cookie sync |
+| [Telethon](https://github.com/LonamiWebs/Telethon) | Telegram MTProto client |
+| [telegram_media_downloader](https://github.com/Dineshkarthik/telegram_media_downloader) | Bulk media download |
+| [TelegramTools](https://github.com/DilshanHarshajith/TelegramTools) | Modular Telegram scraping |
+| [yt-dlp](https://github.com/yt-dlp/yt-dlp) | Video extraction |
+| [Exa](https://exa.ai) | Web search |
+| [Jina Reader](https://github.com/jina-ai/reader) | Web reading |
+| [GitHub CLI](https://github.com/cli/cli) | GitHub operations |
 
-| File | Purpose |
-|------|---------|
-| `telegram-toolkit/config.yaml` | Telegram settings |
-| `~/.agent-reach/cookies/` | Cookie storage |
+---
 
-## 🛡️ Security
+## Security notes
 
-- Never commit `.env` or config files with credentials
-- Use environment variables for sensitive data
-- Rotate tokens regularly
-- Use HTTPS in production
+- Never commit real cookies, session files, API keys, or tokens
+- Use `.env.example` files as templates only
+- Keep Hermes backend behind HTTPS or a tunnel
+- Use separate browser profiles for testing when possible
 
-## 🐛 Troubleshooting
+## License
 
-### Cookie Sync
-
-```bash
-# Server won't start
-export COOKIE_SYNC_TOKEN=$(python3 -c "import secrets; print(secrets.token_urlsafe(32))")
-python3 cookie-sync/webhook.py
-
-# Extension can't connect
-# Check: Is server running? Is token correct?
-curl http://localhost:9999/health
-```
-
-### Telegram Toolkit
-
-```bash
-# Login fails
-# Delete session and retry
-rm -f telegram-toolkit/telegram.session
-python3 telegram-toolkit/cli.py info @telegram
-
-# FloodWait error
-# Wait for the specified time, script auto-handles
-
-# Bot timeout
-# Increase timeout in music_bot.py
-```
-
-## 📚 Credits & Acknowledgments
-
-This project would not be possible without these amazing open-source projects and their developers.
-
-### Core Dependencies
-
-| Project | Author | Repository | Used For |
-|---------|--------|------------|----------|
-| **Agent-Reach** | Panniantong | [github.com/Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach) | Platform router for 16 platforms — Twitter, Reddit, YouTube, GitHub, Bilibili, XiaoHongShu, LinkedIn, Facebook, Instagram, V2EX, Xueqiu, RSS, Telegram, Web, Exa Search, Grok |
-| **CacheCat** | chinmay29hub | [github.com/chinmay29hub/CacheCat](https://github.com/chinmay29hub/CacheCat) | Chrome cookie extension |
-| **Telethon** | LonamiWebs | [github.com/LonamiWebs/Telethon](https://github.com/LonamiWebs/Telethon) | Telegram MTProto client |
-| **telegram_media_downloader** | Dineshkarthik | [github.com/Dineshkarthik/telegram_media_downloader](https://github.com/Dineshkarthik/telegram_media_downloader) | Bulk media download (2672⭐) |
-| **TelegramTools** | DilshanHarshajith | [github.com/DilshanHarshajith/TelegramTools](https://github.com/DilshanHarshajith/TelegramTools) | Modular scraping |
-
-### Research Tools (from Agent-Reach)
-
-| Project | Author | Repository | Used For |
-|---------|--------|------------|----------|
-| **yt-dlp** | yt-dlp-org | [github.com/yt-dlp/yt-dlp](https://github.com/yt-dlp/yt-dlp) | YouTube/video download (1752 extractors) |
-| **Exa Search** | exa-labs | [exa.ai](https://exa.ai) | AI-powered web search |
-| **Jina Reader** | jina-ai | [github.com/jina-ai/reader](https://github.com/jina-ai/reader) | Web page reading |
-| **GitHub CLI** | cli | [github.com/cli/cli](https://github.com/cli/cli) | GitHub operations |
-| **twitter-cli** | - | npm | Twitter/X operations |
-| **rdt-cli** | - | npm | Reddit operations |
-| **bili-cli** | - | npm | Bilibili operations |
-| **mcporter** | - | npm | MCP tool integration |
-
-### Special Thanks
-
-- **Agent-Reach** — The mother project: platform router for 16 platforms with multi-backend routing, health checking, auto-update, and token-optimized research scripts. This project provides the foundation for all research capabilities.
-- **CacheCat** — Chrome extension architecture that inspired our cookie-sync system
-- **Telethon** — Excellent Telegram MTProto implementation
-- **yt-dlp** — Comprehensive video platform support across 1752 extractors
-- **Exa & Jina** — Powerful AI search and web reading capabilities
-- **telegram_media_downloader** — Battle-tested bulk download with rate limiting (2672⭐)
-- **TelegramTools** — Modular scraping, user export, and origin tracing
-
-### License
-
-All original code in this repository is MIT Licensed.
-Individual dependencies retain their original licenses.
+MIT License. See [LICENSE](LICENSE).
