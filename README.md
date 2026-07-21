@@ -58,6 +58,28 @@ Skills included for direct Hermes installation:
 
 ---
 
+## Documentation
+
+### English
+- [Installation Guide](docs/installation.md)
+- [Main Docs](docs/README.en.md)
+- [Cookie Sync Overview](cookie-sync/README.md)
+- [Client README](cookie-sync/client/README.md)
+- [Backend README](cookie-sync/backend/README.md)
+- [Telegram Toolkit](telegram-toolkit/README.md)
+- [Research Tools](research/README.md)
+
+### فارسی
+- [راهنمای نصب](docs/installation.fa.md)
+- [مستندات اصلی](docs/README.fa.md)
+- [نمای کلی Cookie Sync](cookie-sync/README.md)
+- [راهنمای کلاینت](cookie-sync/client/README.fa.md)
+- [راهنمای بک‌اند](cookie-sync/backend/README.fa.md)
+- [ابزارهای تلگرام](telegram-toolkit/README.md)
+- [ابزارهای ریسرچ](research/README.md)
+
+---
+
 ## Quick start
 
 For full installation instructions, see [docs/installation.md](docs/installation.md).
