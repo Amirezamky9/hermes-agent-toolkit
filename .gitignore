@@ -30,3 +30,5 @@ Thumbs.db
 # Downloads
 /downloads/
 /tmp/
+
+!cookie-sync/hermes-browser-sync.config.json

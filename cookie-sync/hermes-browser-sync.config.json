@@ -1,0 +1,35 @@
+{
+  "type": "cachecat-hermes-sync",
+  "version": "1.0",
+  "endpoints": {
+    "sync_url": "https://YOUR-HERMES/api/browser-sync"
+  },
+  "instructions": "Place this file in the Hermes project root. Hermes should read this file and automatically load the latest cookies and update storage_state.json for Playwright sessions.",
+  "sync_format": {
+    "description": "POST request body format",
+    "example": {
+      "domain": "example.com",
+      "cookies": [
+        {
+          "name": "session_id",
+          "value": "abc123",
+          "domain": ".example.com",
+          "path": "/",
+          "secure": true,
+          "httpOnly": true,
+          "sameSite": "Lax",
+          "expirationDate": 1735689600,
+          "session": false,
+          "storeId": "0",
+          "hostOnly": false
+        }
+      ],
+      "timestamp": "2026-07-02T23:17:00.000Z"
+    }
+  },
+  "authentication": {
+    "type": "Bearer Token",
+    "header": "Authorization",
+    "format": "Bearer <API_KEY>"
+  }
+}
