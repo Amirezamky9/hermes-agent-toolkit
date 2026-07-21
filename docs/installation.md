@@ -101,12 +101,14 @@ agent-reach doctor --json
 - `yt-dlp`
 - `gh`
 - `twitter-cli`
-- `rdt-cli`
-- `bili-cli`
 - `mcporter`
 - `telethon`
 
-If a backend is `warn` or `off`, follow `agent-reach doctor --json` and install the missing backend.
+### Optional installs for specific channels
+- `rdt-cli` — Reddit
+- `bili-cli` — Bilibili
+
+If a backend is `warn` or `off`, follow `agent-reach doctor --json` and install the missing backend. For the optional channels above, install them only if you plan to use those platforms.
 
 ---
 
