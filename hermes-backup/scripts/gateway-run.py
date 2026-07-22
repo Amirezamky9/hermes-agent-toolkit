@@ -1,1 +1,0 @@
-/home/hermeswebui/.hermes/hermes-agent/gateway/run.py

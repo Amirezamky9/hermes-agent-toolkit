@@ -1,34 +1,78 @@
-# Sensitive files
+# ═══════════════════════════════════════════════════════
+#  hermes-agent-toolkit — .gitignore
+#  NEVER commit: tokens, cookies, sessions, API keys
+# ═══════════════════════════════════════════════════════
+
+# ── Secrets & Credentials ────────────────────────────────
 *.session
 *.session-journal
+*.token
+*.key
+*.pem
+*.secret
 .env
-!*.env.example
+.env.*
+!.env.example
 cookies/
-*.json
-!package.json
-!tsconfig.json
 !config.yaml.example
+config.yaml
+credential.json
+storage_state.json
+master_token.json
+hermes-cookies.json
+*cookies.json
+*-cookies.json
+*-credential.json
+*-env.txt
+twitter.env
+telegram.env
+xai.env
+api.env
 
-# Python
+# ── Config with secrets ──────────────────────────────────
+mcporter.json
+!.mcporter/mcporter.json.example
+
+# ── Python ────────────────────────────────────────────────
 __pycache__/
 *.pyc
 *.pyo
 .venv/
 venv/
 *.egg-info/
+dist/
+build/
 
-# IDE
+# ── Node ──────────────────────────────────────────────────
+node_modules/
+.npm/
+.yarn/
+
+# ── IDE ───────────────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS
+# ── OS ────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 
-# Downloads
+# ── Downloads / Temp ──────────────────────────────────────
 /downloads/
 /tmp/
+*.zip
+*.tar.gz
 
+# ── Logs ──────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Backups (contain secrets) ─────────────────────────────
+/hermes-backup/
+backups/
+
+# ── Exceptions ────────────────────────────────────────────
+!package.json
+!tsconfig.json
 !cookie-sync/hermes-browser-sync.config.json

@@ -25,6 +25,7 @@ def load_config():
 
 def load_env():
     """Load API keys from telegram.env"""
+    # 1. Try env file first
     env_file = Path.home() / ".agent-reach/cookies/telegram.env"
     if env_file.exists():
         with open(env_file) as f:
@@ -32,10 +33,20 @@ def load_env():
                 if "=" in line and not line.startswith("#"):
                     key, val = line.strip().split("=", 1)
                     os.environ[key] = val
-    return {
-        "api_id": int(os.environ.get("TG_API_ID", "0")),
-        "api_hash": os.environ.get("TG_API_HASH", ""),
-    }
+
+    api_id = int(os.environ.get("TG_API_ID", "0"))
+    api_hash = os.environ.get("TG_API_HASH", "")
+
+    # 2. Fallback: read from config.yaml in toolkit directory
+    if not api_id or not api_hash:
+        config_file = TOOLKIT_DIR / "config.yaml"
+        if config_file.exists():
+            import yaml
+            cfg = yaml.safe_load(open(config_file))
+            api_id = int(cfg.get("api_id", 0))
+            api_hash = cfg.get("api_hash", "")
+
+    return {"api_id": api_id, "api_hash": api_hash}
 
 
 async def cmd_search(args):
