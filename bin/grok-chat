@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# grok-chat — shell wrapper
+set -euo pipefail
+
+DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PLAYWRIGHT_BROWSERS_PATH="${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}" \
+  node "${DIR}/tools/grok-chat/grok-chat.js" "$@"
