@@ -1,0 +1,27 @@
+Fix twitter-cli search: x.com → x.com/home
+
+twitter-cli's ClientTransaction init fetches https://x.com (logged-out page)
+to find the ondemand.s.*.js file. Twitter removed this from the logged-out
+page in mid-2026, causing:
+
+  WARNING: Failed to init ClientTransaction: 'NoneType' object has no attribute 'group'
+
+Without ClientTransaction, the x-client-transaction-id header is missing,
+and the SearchTimeline GraphQL endpoint returns 404.
+
+Fix: fetch https://x.com/home (authenticated page) which still has the
+ondemand JS reference and loading-x-anim elements.
+
+Applies to: twitter-cli 0.8.5 (xclienttransaction 1.0.3)
+File: site-packages/twitter_cli/client.py, line ~1074
+
+--- a/site-packages/twitter_cli/client.py
++++ b/site-packages/twitter_cli/client.py
+@@ -1071,7 +1071,7 @@
+             cffi_session = _get_cffi_session()
+             ct_headers = _gen_ct_headers()
+             home_page = cffi_session.get(
+-                "https://x.com", headers=ct_headers, timeout=10,
++                "https://x.com/home", headers=ct_headers, timeout=10,
+             )
+             home_page_response = bs4.BeautifulSoup(home_page.content, "html.parser")
